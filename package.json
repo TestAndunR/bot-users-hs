@@ -1,0 +1,9 @@
+{
+  "name": "bot-users-hs",
+  "version": "1.0.0",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "firebase-admin": "7.0.0"
+  },
+  "devDependencies": {}
+}

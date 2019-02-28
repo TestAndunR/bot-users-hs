@@ -1,0 +1,115 @@
+{
+  "EDITOR_STATE": {
+    "allProjectFiles": {
+      "3a29a6ca-f13e-4e0b-a0a3-451de367ce36": {
+        "id": "3a29a6ca-f13e-4e0b-a0a3-451de367ce36",
+        "parent": null,
+        "name": "bot-users-hs",
+        "type": "DIRECTORY",
+        "isDirectory": true,
+        "children": [
+          "e2756eb8-0c43-4221-bfd8-408069a416ed",
+          "025511e8-1f12-4d98-ad37-4d25a3b0276b"
+        ],
+        "isRemovable": false,
+        "filePath": "bot-users-hs"
+      },
+      "e2756eb8-0c43-4221-bfd8-408069a416ed": {
+        "id": "e2756eb8-0c43-4221-bfd8-408069a416ed",
+        "parent": "3a29a6ca-f13e-4e0b-a0a3-451de367ce36",
+        "name": "lambda.js",
+        "type": "LAMBDA_FILE",
+        "isDirectory": false,
+        "children": [],
+        "isRemovable": true,
+        "filePath": "bot-users-hs/lambda.js",
+        "code": "let AWS = require('aws-sdk');\nlet firebase = require(\"firebase-admin\");\nlet fs = require('fs');\n\nlet serviceAccount = (process.env.serviceAccount);\nlet addedUserBots = require('./addedUserBots.json');\nconsole.log(serviceAccount);\nlet config = {\n    credential: firebase.credential.cert(serviceAccount),\n    authDomain: \"botusers-hs.firebaseapp.com\",\n    databaseURL: \"https://botusers-hs.firebaseio.com\",\n    projectId: \"botusers-hs\",\n    storageBucket: \"botusers-hs.appspot.com\",\n    messagingSenderId: \"170203556283\"\n};\n\nfirebase.initializeApp(config);\n\nlet db = firebase.database();\nlet userLocationRef = db.ref(\"userLocation\");\n\nexports.handler = function (event, context, callback) {\n    console.log(\"Lambda start\");\n    Promise.all(Object.keys(addedUserBots).map(userName => {\n        console.log(\"Updating user : \", userName)\n        let currentUserMeta = addedUserBots[userName];\n        console.log(\"Meta info : \", currentUserMeta);\n        return userLocationRef.child(currentUserMeta['boxKey']).child(userName).set({\n            'lat': currentUserMeta['lat'],\n            'long': currentUserMeta['long'],\n            'mode': currentUserMeta['mode'],\n            'timestamp': +new Date()\n        }).then((response) => {\n            console.log(\"Updated user location of user : \", userName);\n            return response;\n        });\n    })).then(() => {\n        db.goOffline();\n        console.log(\"DB closed\");\n        context.done();\n    }).catch(error => {\n        console.log(error);\n    });\n}\n",
+        "triggers": [],
+        "config": {
+          "runtime": "nodejs8.10",
+          "handler": "handler",
+          "timeout": 60,
+          "memory": 128,
+          "layers": []
+        },
+        "testCases": {
+          "a0034d6c-3329-42ed-b280-80cce5f59a0d": {
+            "id": "a0034d6c-3329-42ed-b280-80cce5f59a0d",
+            "name": "Unnamed event",
+            "functionId": "e2756eb8-0c43-4221-bfd8-408069a416ed",
+            "event": "{\n    \"key1\": \"value1\",\n    \"key2\": \"value2\",\n    \"key3\": \"value3\"\n}"
+          }
+        }
+      },
+      "025511e8-1f12-4d98-ad37-4d25a3b0276b": {
+        "id": "025511e8-1f12-4d98-ad37-4d25a3b0276b",
+        "parent": "3a29a6ca-f13e-4e0b-a0a3-451de367ce36",
+        "name": "addedUserBots.json",
+        "type": "JSON_FILE",
+        "isDirectory": false,
+        "children": [],
+        "isRemovable": true,
+        "filePath": "bot-users-hs/addedUserBots.json",
+        "code": "{\n  \"harshi93\": {\n    \"boxKey\": \"2598,969\",\n    \"lat\": 6.90038,\n    \"long\": 79.8522222,\n    \"mode\": 0\n  },\n  \"bhagya\": {\n    \"boxKey\": \"2598,969\",\n    \"lat\": 6.911405,\n    \"long\": 79.8509307,\n    \"mode\": 0\n  },\n  \"madhu\": {\n    \"boxKey\": \"2598,969\",\n    \"lat\": 6.910739,\n    \"long\": 79.8489137,\n    \"mode\": 0\n  },\n  \"hasie916\": {\n    \"boxKey\": \"2598,968\",\n    \"lat\": 6.8959766,\n    \"long\": 79.8536963,\n    \"mode\": 0\n  },\n  \"pubudu987\": {\n    \"boxKey\": \"2599,969\",\n    \"lat\": 6.9148346,\n    \"long\": 79.9709523,\n    \"mode\": 0\n  },\n  \"namila1990\": {\n    \"boxKey\": \"2599,969\",\n    \"lat\": 6.9148346,\n    \"long\": 79.9709523,\n    \"mode\": 0\n  },\n  \"jayanthi\": {\n    \"boxKey\": \"2598,968\",\n    \"lat\": 6.8630432,\n    \"long\": 79.8635756,\n    \"mode\": 0\n  },\n  \"pasilk\": {\n    \"boxKey\": \"2598,969\",\n    \"lat\": 6.928264,\n    \"long\": 79.8421433,\n    \"mode\": 0\n  }\n}"
+      }
+    },
+    "deletedFiles": [],
+    "rootNode": "3a29a6ca-f13e-4e0b-a0a3-451de367ce36",
+    "openFiles": [
+      "e2756eb8-0c43-4221-bfd8-408069a416ed",
+      "025511e8-1f12-4d98-ad37-4d25a3b0276b"
+    ],
+    "currentFileId": "e2756eb8-0c43-4221-bfd8-408069a416ed",
+    "resources": {},
+    "customTemplate": {
+      "dialect": null,
+      "definitions": {}
+    },
+    "envVariables": [
+      {
+        "lambdaId": "all",
+        "varKey": "SIGMA_AWS_ACC_ID",
+        "varValue": null,
+        "shouldPersist": false,
+        "displayOnly": false,
+        "editable": false
+      },
+      {
+        "lambdaId": "all",
+        "varKey": "service_token",
+        "varValue": null,
+        "shouldPersist": false,
+        "displayOnly": false,
+        "editable": true
+      }
+    ],
+    "packageJSON": {
+      "dependencies": {
+        "fs": {
+          "name": "fs",
+          "version": "0.0.1-security"
+        },
+        "firebase-admin": {
+          "name": "firebase-admin",
+          "version": "7.0.0"
+        }
+      }
+    }
+  },
+  "PROJECT_META": {
+    "projectName": "bot-users-hs",
+    "projectDescription": "",
+    "projectVersion": "1.0.0",
+    "projectRegion": "us-east-1",
+    "platform": "AWS",
+    "platformRegions": {},
+    "lastSave": 1551337853281
+  },
+  "VCS_STATE": {
+    "provider": "GitHub",
+    "repo": {
+      "name": "bot-users-hs",
+      "url": "https://github.com/TestAndunR/bot-users-hs"
+    }
+  }
+}
