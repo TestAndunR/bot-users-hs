@@ -7,12 +7,12 @@ let serviceAccount = JSON.parse(process.env.service_token);
 console.log(users);
 
 let config = {
-  credential: firebase.credential.cert(serviceAccount),
-    authDomain: "hotspacestest.firebaseapp.com",
-    databaseURL: "https://hotspacestest.firebaseio.com",
-    projectId: "hotspacestest",
-    storageBucket: "hotspacestest.appspot.com",
-    messagingSenderId: "590235768389"
+    credential: firebase.credential.cert(serviceAccount),
+    authDomain: "hotspa-beta.firebaseapp.com",
+    databaseURL: "https://hotspa-beta.firebaseio.com",
+    projectId: "hotspa-beta",
+    storageBucket: "hotspa-beta.appspot.com",
+    messagingSenderId: "803881221797"
 };
 
 firebase.initializeApp(config);
